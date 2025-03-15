@@ -31,6 +31,7 @@ const App = () => {
   const [longestStreak, setLongestStreak] = useState(0);
   const [masteredCards, setMasteredCards] = useState([]);
   const [userAnswer, setUserAnswer] = useState('');
+  const [feedbackMessage, setFeedbackMessage] = useState(''); // State for feedback
 
   // Function to shuffle flashcards
   const shuffleCards = () => {
@@ -54,11 +55,13 @@ const App = () => {
     const correct = isAnswerCorrect(userAnswer, currentCard.answer);
 
     if (correct) {
+      setFeedbackMessage('Correct!'); // Display correct feedback
       setCorrectStreak(correctStreak + 1);
       if (correctStreak + 1 > longestStreak) {
         setLongestStreak(correctStreak + 1);
       }
     } else {
+      setFeedbackMessage('Incorrect!'); // Display incorrect feedback
       setCorrectStreak(0); // Reset streak on incorrect answer
     }
   };
@@ -101,6 +104,13 @@ const App = () => {
         onChange={(e) => setUserAnswer(e.target.value)}
       />
       <button onClick={handleAnswer}>Submit Answer</button>
+
+      {/* Feedback message */}
+      {feedbackMessage && (
+        <div className={`feedback ${feedbackMessage === 'Correct!' ? 'correct' : 'incorrect'}`}>
+          {feedbackMessage}
+        </div>
+      )}
 
       {/* Buttons */}
       <button onClick={() => setCurrentCardIndex((index) => (index + 1) % flashcards.length)}>Next Card</button>
